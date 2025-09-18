@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Quantum_Gates_3.ipynb" afterDir="false" />
+    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="Made a small start">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Quantum_Gates_3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/3_Quantum_Gates.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +54,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -74,11 +75,25 @@
       <option name="presentableId" value="Default" />
       <updated>1757075387285</updated>
       <workItem from="1757075388502" duration="693000" />
-      <workItem from="1757929726423" duration="1832000" />
+      <workItem from="1757929726423" duration="2109000" />
+      <workItem from="1758036183659" duration="1611000" />
     </task>
+    <task id="LOCAL-00001" summary="Made a small start">
+      <option name="closed" value="true" />
+      <created>1757932003111</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1757932003111</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Made a small start" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made a small start" />
   </component>
 </project>
