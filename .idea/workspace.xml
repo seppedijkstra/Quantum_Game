@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="Made a small start">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quantum_Gates_3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/3_Quantum_Gates.ipynb" afterDir="false" />
-    </list>
+    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +73,7 @@
       <updated>1757075387285</updated>
       <workItem from="1757075388502" duration="693000" />
       <workItem from="1757929726423" duration="2109000" />
-      <workItem from="1758036183659" duration="1611000" />
+      <workItem from="1758036183659" duration="1912000" />
     </task>
     <task id="LOCAL-00001" summary="Made a small start">
       <option name="closed" value="true" />
@@ -86,7 +83,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757932003111</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates.">
+      <option name="closed" value="true" />
+      <created>1758188195902</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1758188195902</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -94,6 +99,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Made a small start" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made a small start" />
+    <MESSAGE value="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
   </component>
 </project>
