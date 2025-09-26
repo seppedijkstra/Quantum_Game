@@ -25,7 +25,7 @@ pip install -r requirements.txt
 To build the Jupyter Book from the notebooks, run:
 
 ```bash
-python -c "from jupyter_book.cli.main import main; import sys; sys.argv = ['jupyter-book', 'build', '.']; main()"
+python -c "from jupyter_book.cli.main import main; import sys; sys.argv = ['jupyter-book', 'build','.'];main()"
 ```
 
 The built book will be available inside the **`_build/`** folder.
