@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
+    <list default="true" id="20161d45-98eb-4a74-8f28-0131b73f54e3" name="Changes" comment="Finished the quantum gate notebook together with the answers.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phys_nb_2/physics_nb.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/phys_nb_2/physics_nb.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,20 +44,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -73,7 +76,10 @@
       <updated>1757075387285</updated>
       <workItem from="1757075388502" duration="693000" />
       <workItem from="1757929726423" duration="2109000" />
-      <workItem from="1758036183659" duration="1912000" />
+      <workItem from="1758036183659" duration="4585000" />
+      <workItem from="1758199127121" duration="6699000" />
+      <workItem from="1758789286117" duration="12071000" />
+      <workItem from="1759226115650" duration="4752000" />
     </task>
     <task id="LOCAL-00001" summary="Made a small start">
       <option name="closed" value="true" />
@@ -91,15 +97,71 @@
       <option name="project" value="LOCAL" />
       <updated>1758188195902</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Small renaming so that everything complies">
+      <option name="closed" value="true" />
+      <created>1758188269505</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1758188269505</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Made a start with the actual measurements part">
+      <option name="closed" value="true" />
+      <created>1758190894266</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1758190894266</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Last additions">
+      <option name="closed" value="true" />
+      <created>1758285155302</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1758285155302</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Almost finished the quantum gate notebook, but I still need to merge this one with the physics notebook, as discussed">
+      <option name="closed" value="true" />
+      <created>1758792020552</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1758792020552</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Finished the quantum gate notebook together with the answers.">
+      <option name="closed" value="true" />
+      <created>1758898904182</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1758898904182</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Made a small start" />
     <MESSAGE value="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Made the basis for the quantum gate notebook. The next step will be to explain the quantum gates." />
+    <MESSAGE value="Small renaming so that everything complies" />
+    <MESSAGE value="Made a start with the actual measurements part" />
+    <MESSAGE value="Last additions" />
+    <MESSAGE value="Almost finished the quantum gate notebook, but I still need to merge this one with the physics notebook, as discussed" />
+    <MESSAGE value="Finished the quantum gate notebook together with the answers." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished the quantum gate notebook together with the answers." />
   </component>
 </project>
