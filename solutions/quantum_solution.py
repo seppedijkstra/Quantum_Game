@@ -119,10 +119,36 @@ class Hand:
     def measure_all(self):
         measured_cards = []
         for qcard in self.cards:
-            measured_cards.append(qcard.measure())
+            if isinstance(qcard, QCard):
+                measured_cards.append(qcard.measure())
+            else:
+                measured_cards.append(qcard)
         self.cards = measured_cards
         return measured_cards
     
+    def entangle_and_measure(self, card1: int, card2: int):
+        if card1 < 0 or card1 >= len(self.cards) or card2 < 0 or card2 >= len(self.cards):
+            raise IndexError("Card index out of range.")
+        if not isinstance(self.cards[card1], QCard) or not isinstance(self.cards[card2], QCard):
+            raise ValueError("Both cards must be quantum cards to entangle.")
+        qc = QuantumCircuit(2)
+        qc.initialize([self.cards[card1].a1, self.cards[card1].a2], 0)
+        qc.initialize([self.cards[card2].a1, self.cards[card2].a2], 1)
+        qc.cx(0, 1)  # Entangling operation
+        qc.measure_all()
+        sim = AerSimulator()
+        tqc = transpile(qc, sim)
+        res = sim.run(tqc, shots=1).result().get_counts()
+        if list(res.keys())[0].startswith('0'):
+            self.cards[card1] = self.cards[card1].c1
+        else:
+            self.cards[card1] = self.cards[card1].c2
+        if list(res.keys())[0].endswith('0'):
+            self.cards[card2] = self.cards[card2].c1
+        else:
+            self.cards[card2] = self.cards[card2].c2
+        return self.measure_all()
+
 #TEST FOR HAND
 '''
 qdeck = QDeck()
@@ -133,7 +159,7 @@ print("Cards in hand (before measurement):")
 for qcard in hand.cards:
     print(f"Card 1: {qcard.c1.rank} of {qcard.c1.suit} with amplitude {qcard.a1}")
     print(f"Card 2: {qcard.c2.rank} of {qcard.c2.suit} with amplitude {qcard.a2}\n")
-measured_cards = hand.measure_all()
+measured_cards = hand.entangle_and_measure(0,1)
 for card in measured_cards:
     print(f"Measured card: {card.rank} of {card.suit}")
 '''
@@ -169,7 +195,7 @@ class Dealer(Player):
 
 
 
-class Game:
+class QGame:
     def __init__(self):
         self.qdeck = QDeck()
         self.deck = Deck()
@@ -228,5 +254,5 @@ class Game:
         self.play_round()
         self.determine_winner()
 
-game = Game()
+game = QGame()
 game.start()
