@@ -71,8 +71,10 @@ class QDeck:
         suit1 = random.choice(['Hearts', 'Diamonds', 'Clubs', 'Spades'])
         rank2 = random.choice(['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
         suit2 = random.choice(['Hearts', 'Diamonds', 'Clubs', 'Spades'])
-        a1 = random.random()
-        a2 = sqrt(1 - a1**2)
+        p1 = random.random()
+        p2 = 1 - p1
+        a1 = sqrt(p1)
+        a2 = sqrt(p2)
         qcard = QCard(Card(rank1, suit1), a1, Card(rank2, suit2), a2)
         return qcard
 
@@ -81,8 +83,8 @@ class QDeck:
 '''
 qdeck = QDeck()
 qcard = qdeck.draw()
-print(f"Card 1: {qcard.c1.rank} of {qcard.c1.suit} with amplitude {qcard.a1}")
-print(f"Card 2: {qcard.c2.rank} of {qcard.c2.suit} with amplitude {qcard.a2}")
+print(f"Card 1: {qcard.c1.rank} of {qcard.c1.suit} with probability {qcard.a1**2}")
+print(f"Card 2: {qcard.c2.rank} of {qcard.c2.suit} with probability {qcard.a2**2}")
 measured_card = qcard.measure()
 print(f"Measured card: {measured_card.rank} of {measured_card.suit}")
 '''
@@ -115,6 +117,18 @@ class Hand:
         if any(isinstance(card, QCard) for card in self.cards):
             raise ValueError("Cannot compute bust with unmeasured quantum cards.")
         return self.best_value() > 21
+
+    def is_quantum_bust(self):
+        min = 0
+        for card in self.cards:
+            if isinstance(card, QCard):
+                if card.a1.rank <= card.a2.rank:
+                    min += card.a1.rank
+                else:
+                    min += card.a2.rank
+            else:
+                min += card.value()
+        return min > 21
 
     def measure_all(self):
         measured_cards = []
@@ -157,8 +171,8 @@ hand.add_card(qdeck.draw())
 hand.add_card(qdeck.draw())
 print("Cards in hand (before measurement):")
 for qcard in hand.cards:
-    print(f"Card 1: {qcard.c1.rank} of {qcard.c1.suit} with amplitude {qcard.a1}")
-    print(f"Card 2: {qcard.c2.rank} of {qcard.c2.suit} with amplitude {qcard.a2}\n")
+    print(f"Card 1: {qcard.c1.rank} of {qcard.c1.suit} with probability {qcard.a1**2}")
+    print(f"Card 2: {qcard.c2.rank} of {qcard.c2.suit} with probability {qcard.a2**2}\n")
 measured_cards = hand.entangle_and_measure(0,1)
 for card in measured_cards:
     print(f"Measured card: {card.rank} of {card.suit}")
@@ -169,6 +183,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = Hand()
+        self.entanglement_tokens = 1  # Number of entanglement tokens available
 
     def draw(self, deck):
         card = deck.draw()
@@ -182,6 +197,19 @@ class Player:
         while action not in ['hit', 'stand']:
             print("Invalid input. Please enter 'hit' or 'stand'.")
             action = input(f"{self.name}, do you want to hit or stand? ").strip().lower()
+        return action
+    
+    def decide_entangle(self):
+        if self.entanglement_tokens <= 0:
+            print("No entanglement tokens left.")
+            return 'no'
+        print(f"You have {self.entanglement_tokens} entanglement token(s) left.")
+        action = input(f"{self.name}, do you want to entangle two quantum cards? (yes/no) ").strip().lower()
+        while action not in ['yes', 'no']:
+            print("Invalid input. Please enter 'yes' or 'no'.")
+            action = input(f"{self.name}, do you want to entangle two quantum cards? (yes/no) ").strip().lower()
+        if action == 'yes':
+            self.entanglement_tokens -= 1
         return action
 
 class Dealer(Player):
@@ -206,7 +234,7 @@ class QGame:
     def deal_initial(self):
         for _ in range(2):
             card = self.player.draw(self.qdeck)
-            print(f"{self.player.name} drew {card.c1.rank} of {card.c1.suit} with amplitude {card.a1} and {card.c2.rank} of {card.c2.suit} with amplitude {card.a2}.")
+            print(f"{self.player.name} drew {card.c1.rank} of {card.c1.suit} with probability {card.a1**2} and {card.c2.rank} of {card.c2.suit} with probability {card.a2**2}.")
             self.dealer.draw(self.deck)
         print(f"{self.dealer.name}'s visible card: {self.dealer.hand.cards[0].rank} of {self.dealer.hand.cards[0].suit}")
 
@@ -214,11 +242,28 @@ class QGame:
         action = self.player.decide()
         while action == 'hit':
             card = self.player.draw(self.qdeck)
-            print(f"{self.player.name} drew {card.c1.rank} of {card.c1.suit} with amplitude {card.a1} and {card.c2.rank} of {card.c2.suit} with amplitude {card.a2}.")
+            print(f"{self.player.name} drew {card.c1.rank} of {card.c1.suit} with probability {card.a1**2} and {card.c2.rank} of {card.c2.suit} with probability {card.a2**2}.")
+            if self.player.hand.is_quantum_bust():
+                print(f"{self.player.name} is in a quantum bust state! Must stand and measure now.")
+                action = 'stand'
+                break
             action = self.player.decide()
         # Player stands
-        print(f"{self.player.name} stands. Now measuring hand...")
-        measured_cards = self.player.hand.measure_all()
+        action_entangle = self.player.decide_entangle()
+        if action_entangle == 'yes':
+            if len(self.player.hand.cards) < 2:
+                print("Not enough cards to entangle.")
+            else:
+                try:
+                    idx1 = int(input(f"Enter the index of the first quantum card to entangle (1 to {len(self.player.hand.cards)}): "))
+                    idx2 = int(input(f"Enter the index of the second quantum card to entangle (1 to {len(self.player.hand.cards)}): "))
+                    print(f"{self.player.name} stands and entangles the cards. Now measuring hand...")
+                    measured_cards = self.player.hand.entangle_and_measure(idx1-1, idx2-1)
+                except (IndexError, ValueError) as e:
+                    print(f"Error during entanglement: {e}")
+        else:
+            print(f"{self.player.name} stands. Now measuring hand...")
+            measured_cards = self.player.hand.measure_all()
         for card in measured_cards:
             print(f"Measured card: {card.rank} of {card.suit}")
         print(f"{self.player.name}'s hand value: {self.player.hand.best_value()}")
@@ -236,9 +281,13 @@ class QGame:
         if self.player.hand.is_bust():
             print("Dealer wins! Player busted.")
         elif self.dealer.hand.is_bust():
+            self.player.entanglement_tokens += 1
             print("Player wins! Dealer busted.")
+            print(f"{self.player.name} now has {self.player.entanglement_tokens} entanglement token(s).")
         elif player_value > dealer_value:
+            self.player.entanglement_tokens += 1
             print("Player wins!")
+            print(f"{self.player.name} now has {self.player.entanglement_tokens} entanglement token(s).")
         elif dealer_value > player_value:
             print("Dealer wins!")
         else:
@@ -249,10 +298,25 @@ class QGame:
         if not self.player.hand.is_bust():
             self.dealer_turn()
 
+    def reset(self):
+        self.qdeck = QDeck()
+        self.deck.shuffle()
+        self.player.hand = Hand()
+        self.dealer.hand = Hand()
+
     def start(self):
         self.deal_initial()
         self.play_round()
         self.determine_winner()
+        # Optionally, ask to play again
+        again = input("Do you want to play again? (yes/no) ").strip().lower()
+        if again == 'yes':
+            self.reset()
+            self.start()
+        else:
+            print("Thanks for playing!")
+
+    
 
 game = QGame()
 game.start()
