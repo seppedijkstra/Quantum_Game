@@ -95,6 +95,9 @@ class Hand:
     def __init__(self):
         self.cards = []
 
+    def clear_hand(self):
+        self.cards = []
+
     def add_card(self, card):
         self.cards.append(card)
 
@@ -229,10 +232,11 @@ class Dealer(Player):
 
 
 class QGame:
-    def __init__(self):
+    def __init__(self, money = 10):
         self.qdeck = QDeck()
         self.deck = Deck()
         self.deck.shuffle()
+        self.money = money
         self.player = Player("Player")
         self.dealer = Dealer("Dealer")
 
@@ -290,14 +294,18 @@ class QGame:
             self.player.entanglement_tokens += 1
             print("Player wins! Dealer busted.")
             print(f"{self.player.name} now has {self.player.entanglement_tokens} entanglement token(s).")
+            return "player"
         elif player_value > dealer_value:
             self.player.entanglement_tokens += 1
             print("Player wins!")
             print(f"{self.player.name} now has {self.player.entanglement_tokens} entanglement token(s).")
+            return "player"
         elif dealer_value > player_value:
             print("Dealer wins!")
+            return "dealer"
         else:
             print("It's a tie!")
+            return "tie"
 
     def play_round(self):
         self.player_turn()
@@ -311,9 +319,13 @@ class QGame:
         self.dealer.hand = Hand()
 
     def start(self):
+        bet = int(input("How much money do you want to bet: "))
+        while not game.money >= bet:
+            bet = int(input("You dont have that amount of money, how much do you want to be: "))
         self.deal_initial()
         self.play_round()
-        self.determine_winner()
+        winner = self.determine_winner()
+        self.calculate_money(winner, bet)
         # Optionally, ask to play again
         again = input("Do you want to play again? (yes/no) ").strip().lower()
         if again == 'yes':
@@ -321,6 +333,31 @@ class QGame:
             self.start()
         else:
             print("Thanks for playing!")
+
+    def initialize_game(self):
+        print("Welcome to Quantum Blackjack!")
+        money = int(input("Enter the amount of money that you will play with: "))
+        if money >= 0:
+            self.money = money
+            print(f"You have {self.money} to play with.")
+        else:
+            print("Invalid amount. Starting with $10.")
+            self.money = 10
+            print(f"You have {self.money} to play with.")
+
+    def calculate_money(self, winner, bet):
+        if winner == "player":
+            self.money += bet
+            print(f"You won this round! You now have {self.money}.")
+        elif winner == "dealer":
+            self.money -= bet
+            print(f"You lost this round! You now have {self.money}.")
+        else:
+            print(f"It's a tie! You still have {self.money}.")
+        if self.money <= 0:
+            print("You are out of money! Game over.")
+            exit()
+
     def tunneling(self, hand: int, p : float = 0.2 ):
         print("You busted! You are at", hand, "tunneling is activated.")
         n_of_walls = hand - 21
@@ -339,4 +376,5 @@ class QGame:
             print("You busted! Dealer wins.")
 
 game = QGame()
+game.initialize_game()
 game.start()

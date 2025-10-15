@@ -36,6 +36,9 @@ class Hand:
     def __init__(self):
         self.cards = []
 
+    def clear_hand(self):
+        self.cards = []
+
     def add_card(self, card):
         self.cards.append(card)
 
@@ -59,6 +62,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = Hand()
+
 
     def draw(self, deck):
         card = deck.draw()
