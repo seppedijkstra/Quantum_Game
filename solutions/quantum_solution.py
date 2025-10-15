@@ -278,13 +278,14 @@ class QGame:
     def dealer_turn(self):
         self.dealer.play(self.deck)
         print(f"{self.dealer.name} stands with value {self.dealer.hand.best_value()}.")
-
+    
     def determine_winner(self):
         player_value = self.player.hand.best_value()
         dealer_value = self.dealer.hand.best_value()
 
         if self.player.hand.is_bust():
-            print("Dealer wins! Player busted.")
+            self.tunneling(player_value)
+
         elif self.dealer.hand.is_bust():
             self.player.entanglement_tokens += 1
             print("Player wins! Dealer busted.")
@@ -320,8 +321,22 @@ class QGame:
             self.start()
         else:
             print("Thanks for playing!")
+        def tunneling(self, hand: int, p : float = 0.2 ):
+            print("You busted! You are at", hand, "tunneling is activated.")
+            n_of_walls = hand - 21
+            current_hand = hand
 
-    
+            for i in range(n_of_walls):
+                if random.random() <= p:
+                    print(f"Tunneled through wall {i+1}: {current_hand} → {current_hand - 1}")
+                    current_hand -= 1
+                else:
+                    print(f"Stopped at wall {i+1}. Tunneling failed!.")
+                    break
+            if current_hand == 21:
+                print("You tunneled exactly to 21! Congrats. You win!")
+            else:
+                print("You busted! Dealer wins.")
 
 game = QGame()
 game.start()
