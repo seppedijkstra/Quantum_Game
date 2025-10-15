@@ -1,7 +1,7 @@
 import random
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
-from math import sqrt
+from math import sqrt, acos
 
 from model.model import Card, Deck
 
@@ -14,7 +14,8 @@ class QCard:
 
     def measure(self):
         qc = QuantumCircuit(1)
-        qc.initialize([self.a1, self.a2], 0)
+        # qc.initialize([self.a1, self.a2], 0)
+        qc.ry(2*acos(self.a1), 0)
         qc.measure_all()
         sim = AerSimulator()
         tqc = transpile(qc, sim)
@@ -122,10 +123,12 @@ class Hand:
         min = 0
         for card in self.cards:
             if isinstance(card, QCard):
-                if card.a1.rank <= card.a2.rank:
-                    min += card.a1.rank
+                r1 = int(card.c1.rank) if card.c1.rank not in ['A', 'J', 'Q', 'K'] else 1 if card.c1.rank == 'A' else 10
+                r2 = int(card.c2.rank) if card.c2.rank not in ['A', 'J', 'Q', 'K'] else 1 if card.c2.rank == 'A' else 10
+                if r1 <= r2:
+                    min += r1
                 else:
-                    min += card.a2.rank
+                    min += r2
             else:
                 min += card.value()
         return min > 21
@@ -146,8 +149,10 @@ class Hand:
         if not isinstance(self.cards[card1], QCard) or not isinstance(self.cards[card2], QCard):
             raise ValueError("Both cards must be quantum cards to entangle.")
         qc = QuantumCircuit(2)
-        qc.initialize([self.cards[card1].a1, self.cards[card1].a2], 0)
-        qc.initialize([self.cards[card2].a1, self.cards[card2].a2], 1)
+        # qc.initialize([self.cards[card1].a1, self.cards[card1].a2], 0)
+        # qc.initialize([self.cards[card2].a1, self.cards[card2].a2], 1)
+        qc.ry(2*acos(self.cards[card1].a1), 0)
+        qc.ry(2*acos(self.cards[card2].a1), 1)
         qc.cx(0, 1)  # Entangling operation
         qc.measure_all()
         sim = AerSimulator()
