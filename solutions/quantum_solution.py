@@ -321,22 +321,22 @@ class QGame:
             self.start()
         else:
             print("Thanks for playing!")
-        def tunneling(self, hand: int, p : float = 0.2 ):
-            print("You busted! You are at", hand, "tunneling is activated.")
-            n_of_walls = hand - 21
-            current_hand = hand
+    def tunneling(self, hand: int, p : float = 0.2 ):
+        print("You busted! You are at", hand, "tunneling is activated.")
+        n_of_walls = hand - 21
+        current_hand = hand
 
-            for i in range(n_of_walls):
-                if random.random() <= p:
-                    print(f"Tunneled through wall {i+1}: {current_hand} → {current_hand - 1}")
-                    current_hand -= 1
-                else:
-                    print(f"Stopped at wall {i+1}. Tunneling failed!.")
-                    break
-            if current_hand == 21:
-                print("You tunneled exactly to 21! Congrats. You win!")
+        for i in range(n_of_walls):
+            if random.random() <= p:
+                print(f"Tunneled through wall {i+1}: {current_hand} → {current_hand - 1}")
+                current_hand -= 1
             else:
-                print("You busted! Dealer wins.")
+                print(f"Stopped at wall {i+1}. Tunneling failed!.")
+                break
+        if current_hand == 21:
+            print("You tunneled exactly to 21! Congrats. You win!")
+        else:
+            print("You busted! Dealer wins.")
 
 game = QGame()
 game.start()
