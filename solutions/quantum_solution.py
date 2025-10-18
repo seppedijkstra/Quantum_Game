@@ -288,7 +288,7 @@ class QGame:
         dealer_value = self.dealer.hand.best_value()
 
         if self.player.hand.is_bust():
-            self.tunneling(player_value)
+            return self.tunneling(player_value)
 
         elif self.dealer.hand.is_bust():
             self.player.entanglement_tokens += 1
@@ -372,8 +372,10 @@ class QGame:
                 break
         if current_hand == 21:
             print("You tunneled exactly to 21! Congrats. You win!")
+            return "player"
         else:
             print("You busted! Dealer wins.")
+            return "dealer"
 
 game = QGame()
 game.initialize_game()
