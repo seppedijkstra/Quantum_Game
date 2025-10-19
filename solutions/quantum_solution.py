@@ -1,4 +1,5 @@
 import random
+import itertools
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 from math import sqrt, acos
@@ -68,10 +69,12 @@ print(counter*100/n_tests, "% A Hearts, ", (n_tests-counter)*100/n_tests, "% K S
 
 class QDeck:
     def draw(self) -> QCard:
-        rank1 = random.choice(['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
-        suit1 = random.choice(['Hearts', 'Diamonds', 'Clubs', 'Spades'])
-        rank2 = random.choice(['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'])
-        suit2 = random.choice(['Hearts', 'Diamonds', 'Clubs', 'Spades'])
+        ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+        suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+        cards = list(itertools.product(ranks, suits))
+        random.shuffle(cards)
+        rank1, suit1 = cards.pop()
+        rank2, suit2 = cards.pop()
         p1 = random.random()
         p2 = 1 - p1
         a1 = sqrt(p1)
