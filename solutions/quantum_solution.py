@@ -233,6 +233,11 @@ class Dealer(Player):
 
 
 
+def createViewCards(cards):
+    viewCards = []
+    for card in cards:
+        viewCards.append(ViewCard(str(card.rank), card.suit))
+    return viewCards
 
 
 class QGame:
@@ -248,22 +253,16 @@ class QGame:
         print(f"\n=== PLAYER ===\n")
         for _ in range(2):
             card = self.player.draw(self.qdeck)
-            viewCard1 = ViewCard(str(card.c1.rank), card.c1.suit)
-            viewCard2 = ViewCard(str(card.c2.rank), card.c2.suit)
-            print(f"{self.player.name} drew: {View([viewCard1, viewCard2])} with probability {card.a1**2} and {card.a2**2} respectively")
+            print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2} and {card.a2**2} respectively")
             self.dealer.draw(self.deck)
         print(f"\n=== DEALER ===\n")
-        print(self.dealer.hand.cards[0].rank, self.dealer.hand.cards[0].suit)
-        viewCardDealer = ViewCard(str(self.dealer.hand.cards[0].rank), self.dealer.hand.cards[0].suit)
-        print(f"{self.dealer.name}'s visible card: {View([viewCardDealer])}")
+        print(f"{self.dealer.name}'s visible card: {View(createViewCards(self.dealer.hand.cards[:1]))}")
 
     def player_turn(self):
         action = self.player.decide()
         while action == 'hit':
             card = self.player.draw(self.qdeck)
-            viewCard1 = ViewCard(str(card.c1.rank), card.c1.suit)
-            viewCard2 = ViewCard(str(card.c2.rank), card.c2.suit)
-            print(f"{self.player.name} drew: {View([viewCard1, viewCard2])} with probability {card.a1**2} and {card.a2**2} respectively")
+            print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2} and {card.a2**2} respectively")
             if self.player.hand.is_quantum_bust():
                 print(f"{self.player.name} is in a quantum bust state! Must stand and measure now.")
                 action = 'stand'
@@ -285,19 +284,13 @@ class QGame:
         else:
             print(f"{self.player.name} stands. Now measuring hand...")
             measured_cards = self.player.hand.measure_all()
-        measured_viewCards = []
-        for card in measured_cards:
-            measured_viewCards.append(ViewCard(str(card.rank), card.suit))
-        print(f"{self.player.name}'s {View(measured_viewCards)} with hand value: {self.player.hand.best_value()}")
+        print(f"{self.player.name}'s {View(createViewCards(measured_cards))} with hand value: {self.player.hand.best_value()}")
         if self.player.hand.is_bust():
             print(f"{self.player.name} busts with value {self.player.hand.best_value()}!")
 
     def dealer_turn(self):
         self.dealer.play(self.deck)
-        dealer_cards = []
-        for card in self.dealer.hand.cards:
-            dealer_cards.append(ViewCard(str(card.rank), card.suit))
-        print(f"{self.dealer.name} stands: {View(dealer_cards)} with value {self.dealer.hand.best_value()}.")
+        print(f"{self.dealer.name} stands: {View(createViewCards(self.dealer.hand.cards))} with value {self.dealer.hand.best_value()}.")
     
     def determine_winner(self):
         player_value = self.player.hand.best_value()
