@@ -30,3 +30,6 @@ mathjax
 # Quantum computing libraries
 qiskit
 qiskit-aer
+
+# Terminal playing cards
+terminal_playing_cards

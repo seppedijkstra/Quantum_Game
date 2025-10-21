@@ -249,11 +249,14 @@ class QGame:
         self.player = Player("Player")
         self.dealer = Dealer("Dealer")
 
+    def print_player_card(self, card):
+        print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2:0,.2f} and {card.a2**2:0,.2f} respectively")
+
     def deal_initial(self):
         print(f"\n=== PLAYER ===\n")
         for _ in range(2):
             card = self.player.draw(self.qdeck)
-            print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2} and {card.a2**2} respectively")
+            self.print_player_card(card)
             self.dealer.draw(self.deck)
         print(f"\n=== DEALER ===\n")
         print(f"{self.dealer.name}'s visible card: {View(createViewCards(self.dealer.hand.cards[:1]))}")
@@ -262,7 +265,7 @@ class QGame:
         action = self.player.decide()
         while action == 'hit':
             card = self.player.draw(self.qdeck)
-            print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2} and {card.a2**2} respectively")
+            self.print_player_card(card)
             if self.player.hand.is_quantum_bust():
                 print(f"{self.player.name} is in a quantum bust state! Must stand and measure now.")
                 action = 'stand'
@@ -284,7 +287,7 @@ class QGame:
         else:
             print(f"{self.player.name} stands. Now measuring hand...")
             measured_cards = self.player.hand.measure_all()
-        print(f"{self.player.name}'s {View(createViewCards(measured_cards))} with hand value: {self.player.hand.best_value()}")
+        print(f"{self.player.name}'s hand: {View(createViewCards(measured_cards))} with hand value: {self.player.hand.best_value()}")
         if self.player.hand.is_bust():
             print(f"{self.player.name} busts with value {self.player.hand.best_value()}!")
 
