@@ -1,5 +1,6 @@
 import random
 import itertools
+import time
 from terminal_playing_cards import Card as ViewCard, View
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
@@ -230,6 +231,7 @@ class Dealer(Player):
         while self.hand.best_value() < 17:
             self.draw(deck)
             print(f"{self.name} drew a card.")
+            time.sleep(3)
 
 
 
@@ -251,6 +253,13 @@ class QGame:
 
     def print_player_card(self, card):
         print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2:0,.2f} and {card.a2**2:0,.2f} respectively")
+
+    def print_moving_dots(self, msg, cycles):
+        for i in range(cycles):  # how many cycles
+            dots = "." * ((i % 3) + 1)
+            print(f"\r{msg}{dots}  ", end="", flush=True)
+            time.sleep(0.4)
+
 
     def deal_initial(self):
         print(f"\n=== PLAYER ===\n")
@@ -285,15 +294,21 @@ class QGame:
                 except (IndexError, ValueError) as e:
                     print(f"Error during entanglement: {e}")
         else:
-            print(f"{self.player.name} stands. Now measuring hand...")
+            # print(f"{self.player.name} stands. Now measuring hand...")
+            msg = f"{self.player.name} stands. Now measuring hand"
+            self.print_moving_dots(msg, 9)
+            print()
             measured_cards = self.player.hand.measure_all()
         print(f"{self.player.name}'s hand: {View(createViewCards(measured_cards))} with hand value: {self.player.hand.best_value()}")
+        time.sleep(4)
         if self.player.hand.is_bust():
             print(f"{self.player.name} busts with value {self.player.hand.best_value()}!")
+            time.sleep(4)
 
     def dealer_turn(self):
         self.dealer.play(self.deck)
         print(f"{self.dealer.name} stands: {View(createViewCards(self.dealer.hand.cards))} with value {self.dealer.hand.best_value()}.")
+        time.sleep(4)
     
     def determine_winner(self):
         player_value = self.player.hand.best_value()
@@ -376,12 +391,16 @@ class QGame:
         current_hand = hand
 
         for i in range(n_of_walls):
+            msg = f'Trying to tunnel through wall {i + 1}'
+            self.print_moving_dots(msg, 9)
+            print()
             if random.random() <= p:
                 print(f"Tunneled through wall {i+1}: {current_hand} → {current_hand - 1}")
                 current_hand -= 1
             else:
                 print(f"Stopped at wall {i+1}. Tunneling failed!.")
                 break
+        time.sleep(3)
         if current_hand == 21:
             print("You tunneled exactly to 21! Congrats. You win!")
             return "player"
