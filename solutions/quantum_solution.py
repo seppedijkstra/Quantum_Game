@@ -216,6 +216,7 @@ class Player:
         if self.entanglement_tokens <= 0:
             print("No entanglement tokens left.")
             return 'no'
+        print(f"\n=== Entanglement ===\n")
         print(f"You have {self.entanglement_tokens} entanglement token(s) left.")
         action = input(f"{self.name}, do you want to entangle two quantum cards? (yes/no) ").strip().lower()
         while action not in ['yes', 'no']:
@@ -231,7 +232,7 @@ class Dealer(Player):
         while self.hand.best_value() < 17:
             self.draw(deck)
             print(f"{self.name} drew a card.")
-            time.sleep(3)
+            time.sleep(2.5)
 
 
 
@@ -252,7 +253,7 @@ class QGame:
         self.dealer = Dealer("Dealer")
 
     def print_player_card(self, card):
-        print(f"{self.player.name} drew: {View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2:0,.2f} and {card.a2**2:0,.2f} respectively")
+        print(f"{View(createViewCards([card.c1, card.c2]))} with probability {card.a1**2:0,.2f} and {card.a2**2:0,.2f} respectively")
 
     def print_moving_dots(self, msg, cycles):
         for i in range(cycles):  # how many cycles
@@ -262,13 +263,13 @@ class QGame:
 
 
     def deal_initial(self):
-        print(f"\n=== PLAYER ===\n")
+        print(f"\n=== {self.player.name} HAND ===")
         for _ in range(2):
             card = self.player.draw(self.qdeck)
             self.print_player_card(card)
             self.dealer.draw(self.deck)
-        print(f"\n=== DEALER ===\n")
-        print(f"{self.dealer.name}'s visible card: {View(createViewCards(self.dealer.hand.cards[:1]))}")
+        print(f"\n=== {self.dealer.name} HAND ===")
+        print(f"{View(createViewCards(self.dealer.hand.cards[:1]))}")
 
     def player_turn(self):
         action = self.player.decide()
@@ -294,20 +295,20 @@ class QGame:
                 except (IndexError, ValueError) as e:
                     print(f"Error during entanglement: {e}")
         else:
-            # print(f"{self.player.name} stands. Now measuring hand...")
+            print(f"\n=== Measurement ===\n")
             msg = f"{self.player.name} stands. Now measuring hand"
             self.print_moving_dots(msg, 9)
             print()
             measured_cards = self.player.hand.measure_all()
         print(f"{self.player.name}'s hand: {View(createViewCards(measured_cards))} with hand value: {self.player.hand.best_value()}")
-        time.sleep(4)
+        time.sleep(3)
         if self.player.hand.is_bust():
             print(f"{self.player.name} busts with value {self.player.hand.best_value()}!")
             time.sleep(4)
 
     def dealer_turn(self):
         self.dealer.play(self.deck)
-        print(f"{self.dealer.name} stands: {View(createViewCards(self.dealer.hand.cards))} with value {self.dealer.hand.best_value()}.")
+        print(f"{self.dealer.name} hand: {View(createViewCards(self.dealer.hand.cards))} with value {self.dealer.hand.best_value()}.")
         time.sleep(4)
     
     def determine_winner(self):
@@ -386,6 +387,7 @@ class QGame:
             exit()
 
     def tunneling(self, hand: int, p : float = 0.2 ):
+        print(f"\n=== Tunneling ===\n")
         print("You busted! You are at", hand, "tunneling is activated.")
         n_of_walls = hand - 21
         current_hand = hand
@@ -400,7 +402,7 @@ class QGame:
             else:
                 print(f"Stopped at wall {i+1}. Tunneling failed!.")
                 break
-        time.sleep(3)
+        time.sleep(2)
         if current_hand == 21:
             print("You tunneled exactly to 21! Congrats. You win!")
             return "player"
