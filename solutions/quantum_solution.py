@@ -151,29 +151,40 @@ class Hand:
         self.cards = measured_cards
         return measured_cards
     
-    def entangle_and_measure(self, card1: int, card2: int):
-        if card1 < 0 or card1 >= len(self.cards) or card2 < 0 or card2 >= len(self.cards):
-            raise IndexError("Card index out of range.")
-        if not isinstance(self.cards[card1], QCard) or not isinstance(self.cards[card2], QCard):
-            raise ValueError("Both cards must be quantum cards to entangle.")
-        qc = QuantumCircuit(2)
-        # qc.initialize([self.cards[card1].a1, self.cards[card1].a2], 0)
-        # qc.initialize([self.cards[card2].a1, self.cards[card2].a2], 1)
-        qc.ry(2*acos(self.cards[card1].a1), 0)
-        qc.ry(2*acos(self.cards[card2].a1), 1)
-        qc.cx(0, 1)  # Entangling operation
+    def entangle_and_measure(self, card1: int, card2: int, parity: bool):
+        if parity==False:
+            na1 = self.cards[card1].a1 * self.cards[card2].a1
+            na2 = self.cards[card1].a2 * self.cards[card2].a2
+        else:
+            na1 = self.cards[card1].a1 * self.cards[card2].a2
+            na2 = self.cards[card1].a2 * self.cards[card2].a1
+        norm = sqrt(na1**2 + na2**2)
+        na1 /= norm
+        na2 /= norm
+
+        qc = QuantumCircuit(1)
+        # qc.initialize([na1, na2], 0)
+        qc.ry(2*acos(na1), 0)
         qc.measure_all()
+        print()
+
         sim = AerSimulator()
         tqc = transpile(qc, sim)
         res = sim.run(tqc, shots=1).result().get_counts()
-        if list(res.keys())[0].startswith('0'):
+
+        if '0' in res:
             self.cards[card1] = self.cards[card1].c1
+            if parity==False:
+                self.cards[card2] = self.cards[card2].c1
+            else:
+                self.cards[card2] = self.cards[card2].c2
         else:
             self.cards[card1] = self.cards[card1].c2
-        if list(res.keys())[0].endswith('0'):
-            self.cards[card2] = self.cards[card2].c1
-        else:
-            self.cards[card2] = self.cards[card2].c2
+            if parity==False:
+                self.cards[card2] = self.cards[card2].c2
+            else:
+                self.cards[card2] = self.cards[card2].c1
+
         return self.measure_all()
 
 #TEST FOR HAND
@@ -215,7 +226,7 @@ class Player:
     def decide_entangle(self):
         if self.entanglement_tokens <= 0:
             print("No entanglement tokens left.")
-            return 'no'
+            return 'no',None,None,None
         print(f"\n=== Entanglement ===\n")
         print(f"You have {self.entanglement_tokens} entanglement token(s) left.")
         action = input(f"{self.name}, do you want to entangle two quantum cards? (yes/no) ").strip().lower()
@@ -223,8 +234,26 @@ class Player:
             print("Invalid input. Please enter 'yes' or 'no'.")
             action = input(f"{self.name}, do you want to entangle two quantum cards? (yes/no) ").strip().lower()
         if action == 'yes':
+            if len(self.hand.cards) < 2:
+                print("Not enough cards to entangle.")
+                return 'no',None,None,None
+            else:
+                try:
+                    idx1 = int(input(f"Enter the index of the first quantum card to entangle (1 to {len(self.hand.cards)}): "))
+                    idx2 = int(input(f"Enter the index of the second quantum card to entangle (1 to {len(self.hand.cards)}): "))
+                    if idx1 < 1 or idx1 > len(self.hand.cards) or idx2 < 1 or idx2 > len(self.hand.cards):
+                        raise IndexError("Card index out of range.")
+                    if not isinstance(self.hand.cards[idx1-1], QCard) or not isinstance(self.hand.cards[idx2-1], QCard):
+                        raise ValueError("Both cards must be quantum cards to entangle.")
+                    parity_input = input("Enter the desired parity for entanglement (0 for same, 1 for different): ").strip()
+                    if parity_input not in ['0', '1']:
+                        raise ValueError("Invalid parity input.")
+                except (IndexError, ValueError) as e:
+                    print(f"Error during entanglement: {e}")
+                    return 'no',None,None,None
             self.entanglement_tokens -= 1
-        return action
+            return action, idx1, idx2, parity_input
+        return action,None,None,None
 
 class Dealer(Player):
     def play(self, deck):
@@ -282,18 +311,16 @@ class QGame:
                 break
             action = self.player.decide()
         # Player stands
-        action_entangle = self.player.decide_entangle()
+        action_entangle, idx1, idx2, parity = self.player.decide_entangle()
         if action_entangle == 'yes':
-            if len(self.player.hand.cards) < 2:
-                print("Not enough cards to entangle.")
-            else:
-                try:
-                    idx1 = int(input(f"Enter the index of the first quantum card to entangle (1 to {len(self.player.hand.cards)}): "))
-                    idx2 = int(input(f"Enter the index of the second quantum card to entangle (1 to {len(self.player.hand.cards)}): "))
-                    print(f"{self.player.name} stands and entangles the cards. Now measuring hand...")
-                    measured_cards = self.player.hand.entangle_and_measure(idx1-1, idx2-1)
-                except (IndexError, ValueError) as e:
-                    print(f"Error during entanglement: {e}")
+            try:
+                print(f"\n=== Measurement ===\n")
+                msg = f"{self.player.name} stands and entangles cards {idx1} and {idx2} with parity {parity}. Now measuring hand"
+                self.print_moving_dots(msg, 9)
+                print()
+                measured_cards = self.player.hand.entangle_and_measure(idx1-1, idx2-1, bool(int(parity)))
+            except (IndexError, ValueError) as e:
+                print(f"Error during entanglement: {e}")
         else:
             print(f"\n=== Measurement ===\n")
             msg = f"{self.player.name} stands. Now measuring hand"
