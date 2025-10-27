@@ -35,9 +35,9 @@ To learn more about the quantum rules of this game, read [here](./Quantum_Blackj
 
 ## Google Colab
 You can try all the notebooks using Google Colab! To do so, just click on the following links.
-- [Classical notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/1_Classical_Game.ipynb)
-- [Physics notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/2_physics_nb.ipynb)
-- [Quantum Game notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/3_Quantum_Game.ipynb)
+- [Classical notebook](https://colab.research.google.com/drive/1c4wySMz1_JNjpkCsH8jxuNyjv7F725yD?usp=sharing)
+- [Physics notebook](https://colab.research.google.com/drive/1lG2jHOXz7Yet5KiIV_mwwfdSnISV5r06?usp=sharing)
+- [Quantum Game notebook](https://colab.research.google.com/drive/1_v93UL_mLW3f0_iEQyst4Q8MRmlYqfh3?usp=sharing)
 
 ## License
 [License](./LICENSE.txt)
