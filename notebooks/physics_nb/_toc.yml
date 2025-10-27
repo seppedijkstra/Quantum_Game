@@ -1,0 +1,17 @@
+format: jb-book
+root: intro
+title: "Quantum Mechanics Introduction"
+
+chapters:
+- file: double-slit
+  title: "Double Slit Experiment"
+- file: superposition
+  title: "Superposition"
+- file: measurements
+  title: "Measurements"
+- file: entanglement
+  title: "Entanglement"
+- file: tunnelling
+  title: "Tunnelling"
+- file: references
+  title: "References"

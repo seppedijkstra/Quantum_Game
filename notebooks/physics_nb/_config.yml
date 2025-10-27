@@ -1,0 +1,65 @@
+title: "Quantum Mechanics Introduction"
+author: "João Martins, Paolo Leoni"
+logo: ""
+
+# Short description of the book
+description: >-
+  An interactive introduction to quantum mechanics fundamentals, 
+  covering key concepts from the double-slit experiment to quantum tunnelling.
+
+# Execution settings
+execute:
+  execute_notebooks: auto
+  timeout: 120
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: quantum_mechanics_intro.tex
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/seppedijkstra/Quantum_Game
+  branch: main
+
+# Add GitHub buttons to your book
+html:
+  use_issues_button: true
+  use_repository_button: true
+  use_edit_page_button: true
+  use_download_button: true
+  favicon: ""
+  
+# Math and citations
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - dollarmath
+    - html_image
+    - colon_fence
+    - deflist
+    - fieldlist
+    - html_admonition
+    - linkify
+    - replacements
+    - smartquotes
+    - tasklist
+
+# Bibliography
+bibtex_bibfiles:
+  - references.bib
+
+# Sphinx configuration
+sphinx:
+  config:
+    html_theme_options:
+      show_navbar_depth: 2
+      repository_url: https://github.com/seppedijkstra/Quantum_Game
+      use_repository_button: true
+      use_issues_button: true
+      use_edit_page_button: true
+      use_download_button: true
+      path_to_docs: ""
+      repository_branch: "main"
+      show_toc_level: 2
+    bibtex_reference_style: author_year
