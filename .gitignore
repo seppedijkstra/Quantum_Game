@@ -2,3 +2,4 @@ physics_nb/_build/
 *_test.py
 .venv/
 *__pycache__/
+.idea/
