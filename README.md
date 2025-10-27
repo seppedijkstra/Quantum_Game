@@ -33,5 +33,11 @@ The built book will be available inside the **`_build/`** folder.
 ## Quantum game Rules
 To learn more about the quantum rules of this game, read [here](./Quantum_Blackjack_Rules.pdf).
 
+## Google Colab
+You can try all the notebooks using Google Colab! To do so, just click on the following links.
+- [Classical notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/1_Classical_Game.ipynb)
+- [Physics notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/phys_nb_2/physics_nb.ipynb)
+- [Quantum Game notebook](https://colab.research.google.com/github/seppedijkstra/Quantum_Game/blob/master/notebooks/4_Quantum_Game.ipynb)
+
 ## License
 [License](./LICENSE.txt)
