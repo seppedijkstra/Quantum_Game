@@ -30,7 +30,8 @@ python -c "from jupyter_book.cli.main import main; import sys; sys.argv = ['jupy
 
 The built book will be available inside the **`_build/`** folder.
 
-## Usage
+## Quantum game Rules
+To learn more about the quantum rules of this game, read [here](./Quantum_Blackjack_Rules.pdf).
 
 ## License
 [License](./LICENSE.txt)
